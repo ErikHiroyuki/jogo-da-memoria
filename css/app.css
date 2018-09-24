@@ -1,28 +1,3 @@
-    /*RESPONSIVO*/
-     @media only screen and (max-width: 1024px) {
-        .score-panel {
-            font-size: 15px;
-        }
-
-    }
-
-    @media only screen and (max-width: 700px) {
-        .score-panel {
-            width: 90%;
-        }
-
-        .deck {
-            width: 100%;
-            padding: 16px;
-            min-height: 100vw;
-        }
-
-        .deck .card {
-            width: 20vw;
-            height: 20vw;
-        }
-    }
-
     html {
         box-sizing: border-box;
     }
@@ -249,3 +224,28 @@
   -webkit-animation-name: headShake;
   animation-name: headShake;
 }
+
+   /*RESPONSIVO*/
+     @media screen and (max-width: 800px) {
+        .score-panel {
+            font-size: 15px;
+        }
+
+    }
+
+    @media screen and (max-width: 400px) {
+        .score-panel {
+            width: 90%;
+        }
+
+        .deck {
+            width: 100%;
+            padding: 16px;
+            min-height: 100vw;
+        }
+
+        .deck .card {
+            width: 20vw;
+            height: 20vw;
+        }
+    }
