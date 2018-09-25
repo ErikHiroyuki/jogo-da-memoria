@@ -1,52 +1,52 @@
-    html {
-        box-sizing: border-box;
-    }
+html {
+    box-sizing: border-box;
+}
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: inherit;
-        }
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
 
-    html,body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-    body {
-        background: #ffffff url('../img/geometry2.png');
-        font-family: 'Coda', cursive;
-    }
+body {
+    background: white url(../img/geometry2.png);
+    font-family: Coda, cursive;
+}
 
 
-    h1 {
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 300;
-        text-transform: uppercase;
-        color: #246c75;
 
-    }
+h1 {
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #246c75;
+}
 
-    ul {
-         list-style-type: none;
-    }
+ul {
+    list-style-type: none;
+}
 
-    .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
+.container {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
-    .show {
+.show {
     visibility: visible !important;
     opacity: 1 !important;
 }
 
-    .deck {
+.deck {
         width: 660px;
         min-height: 680px;
         background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
@@ -58,9 +58,9 @@
         justify-content: space-between;
         align-items: center;
         margin: 0 0 3em;
-    }
+}
 
-    .deck .card {
+.deck .card {
         height: 125px;
         width: 125px;
         background: #2e3d49;
@@ -72,25 +72,25 @@
         justify-content: center;
         align-items: center;
         box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-    }
+}
 
-    .deck .card.open {
-        transform: rotateY(0);
-        background: #02b3e4;
-        cursor: default;
-    }
+.deck .card.open {
+    transform: rotateY(0);
+    background: #02b3e4;
+    cursor: default;
+}
 
-    .deck .card.show {
-        font-size: 33px;
-    }
+.deck .card.show {
+    font-size: 32px;
+}
 
-    .deck .card.match {
-        cursor: default;
-        background: #02ccba;
-        font-size: 33px;
-    }
+.deck .card.match {
+    cursor: default;
+    background: #02ccba;
+    font-size: 32px;
+}
 
-    .deck .card.unmatched {
+.deck .card.unmatched {
     background: #F76464;
     animation-name: headShake;
     -webkit-backface-visibility: visible;
@@ -98,11 +98,15 @@
     animation-duration: .75s;
 }
 
-    .score-panel {
+.deck .card.disabled {
+    pointer-events: none;
+}
+
+.score-panel {
         text-align: left;
         width: 545px;
         margin-bottom: 10px;
-    }
+}
 
     .score-panel .stars {
         margin: 0;
@@ -120,7 +124,8 @@
         float: right;
         cursor: pointer;
     }
-    .moves, .timer {
+
+        .moves, .timer {
         display: inline-block;
     }
 
@@ -159,7 +164,7 @@
     }
 
 /*POPUP DO PARABENS*/
-    #popup-parabens {
+    #parabens-popup {
         visibility: hidden;
         opacity: 0;
         position: fixed;
@@ -169,7 +174,7 @@
         justify-content: center;   
     }
 
-    #popup-parabens .popup {
+    #parabens-popup .popup {
         text-align: center;
         background: #E6FFFF;
         margin: 15px;
@@ -177,7 +182,7 @@
         border-radius: 20px;
     }
 
-    #popup-parabens .avaliacao {
+    #parabens-popup .avaliacao {
         margin: 40px 0;
         font-size: 1.25rem;
     }
@@ -185,6 +190,34 @@
 .paragrafo{
     text-align: left;
 }
+
+/* RESPONSIVO */
+
+     @media screen and (max-width: 960px) {
+        .score-panel {
+            font-size: 15px;
+        }
+
+    }
+
+    @media screen and (max-width: 400px) {
+        .score-panel {
+            width: 90%;
+        }
+
+        .deck {
+            width: 100%;
+            padding: 16px;
+            min-height: 100vw;
+        }
+
+        .deck .card {
+            width: 20vw;
+            height: 20vw;
+        }
+    }
+
+/* ANIMAÇÂO */
 
 @keyframes headShake {
   0% {
@@ -224,28 +257,3 @@
   -webkit-animation-name: headShake;
   animation-name: headShake;
 }
-
-   /*RESPONSIVO*/
-     @media screen and (max-width: 800px) {
-        .score-panel {
-            font-size: 15px;
-        }
-
-    }
-
-    @media screen and (max-width: 400px) {
-        .score-panel {
-            width: 90%;
-        }
-
-        .deck {
-            width: 100%;
-            padding: 16px;
-            min-height: 100vw;
-        }
-
-        .deck .card {
-            width: 20vw;
-            height: 20vw;
-        }
-    }
