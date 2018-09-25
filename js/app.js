@@ -1,62 +1,57 @@
 //VAR's
-	let card = document.getElementsByClassName("card");
-	let cards = [...card];
-	let openedCards = [];
-	let matchedCard = document.getElementsByClassName("match");
-	let movi = 0;
+let card = document.getElementsByClassName("card");
+let cards = [...card];
+let openedCards = [];
+let matchedCard = document.getElementsByClassName("match");
+let movimentos = 0;
 
-
-//DURANTE O JOGO
-	const popup = document.getElementById("popup-parabens");
-
+//POPUP DE PRABENS
+	const popup = document.getElementById("parabens-popup");
 
 	let refreshHTML = function(target, value) 
 	{
 		return target.innerHTML = value;
 	};
 
-	let CounterSet = function(movi) 
+	let CounterSet = function(movimentos) 
 	{
 		this.target = document.querySelector(".counter");
-		refreshHTML(this.target, movi);
+		refreshHTML(this.target, movimentos);
 	};
 
 //CONTADOR DE MOVIMENTOS
 	CounterSet.prototype.add = function() 
 	{
-		movi++; 
-		refreshHTML(this.target, movi); 
+		movimentos++;
+		refreshHTML(this.target, movimentos);
 	};
 
 //ATUALIZAR-RESETAR O CONTATADOR
+
 	CounterSet.prototype.restart = function() 
 	{
-		movi = 0;
-		refreshHTML(this.target, movi); 
+		movimentos = 0;
+		refreshHTML(this.target, movimentos);
 	};
 
-//TOTAL DE MOVIMENETOS
-	let counter = new CounterSet(movi); 
-
+	let counter = new CounterSet(movimentos);
 
 //ESTRELA - ATÉ 15 MOVIMENTOS = 3 ESTRELAS, ATÉ 23 MOVIMENTOS = 2 ESTRELAS, ACIMA DE 23 MOVIMENTOS = 1 ESTRELA
-	let placarEstrela = function() 
+	let PlcarEstrela = function() 
 	{
 		this.estrelas = document.querySelectorAll(".fa-star");
 	};
 
-	placarEstrela.prototype.rate = function() 
+	PlcarEstrela.prototype.rate = function() 
 	{
-		if(movi > 15 && movi < 23) 
-		{
-			this.estrelas[2].classList.remove("luz"); 
-		} else if(movi > 23) 
-		{
-			this.estrelas[1].classList.remove("luz"); 
+		if(movimentos > 15 && movimentos < 23) {
+			this.estrelas[2].classList.remove("luz");
+		} else if(movimentos > 23) {
+			this.estrelas[1].classList.remove("luz");
 		}
 	};
 
-	placarEstrela.prototype.restart = function() 
+	PlcarEstrela.prototype.restart = function() 
 	{
 		for(var i=0; i<this.estrelas.length; i++) 
 		{
@@ -64,111 +59,68 @@
 		}
 	};
 
-	let estrelas = new placarEstrela();
+	let estrelas = new PlcarEstrela();
 
-//  MOSTRANDO MINUTOS E SEGUNDOS 
-	const timer = document.querySelector(".timer"); 
-	let second = 
-	{
+//DECLANDO O TIMER
+	const timer = document.querySelector(".timer");
+
+
+//MOSTRANDO MINUTOS E SEGUNDOS 
+	let second = {
 		value: 0,
 		label: " "
 	};
 
-	let minute = 
-	{
+	let minute = {
 		value: 0,
 		label: " : "
 	};
-
 
 	let interval;
 
 	window.onload = iniciarJogo();
 
-//O TEMPO COMEÇA A CONTAR A PARTIR DO PRIMEIRO MOVIMENTO
-	function comecaTimer() 
-	{
-		if(movi == 1) { 
-			interval = setInterval(function() 
-			{
-				second.value++; 
-				if(second.value == 50) 
-				{
-					minute.value++;
-					second.value = 0;
-				}
-				refreshTimer();
-			}, 1200);
-		}
-	}
-
-//CONTADOR DE SOMA DE MOVIMENTOS 
+// LISTANDO OS EVENTOS
 	for(var i = 0; i < cards.length; i++) 
-	{  
+	{
 		cards[i].addEventListener("click", displayCard);
-		cards[i].addEventListener("click", cardAberto);
+		cards[i].addEventListener("click", cardAbrir);
 		cards[i].addEventListener("click", parabens);
 	}
 
-//RESETAR O TEMPO
-	function resetaTimer() 
-	{ 
-		second.value = 0;
-		minute.value = 0;
-		refreshTimer();
-	}
-
-// RESETAR O JOGO
+//RESETAR O BTN
 	document.querySelector(".restart").addEventListener("click", iniciarJogo);
 
-//APÓS VENCER
-	function parabens() {
-		if(matchedCard.length == 16) 
-		{
-			clearInterval(interval);
-			popup.classList.add("show");
-			document.getElementById("total-movi").innerHTML = movi; 
-			document.getElementById("total-tempo").innerHTML = timer.innerHTML;
-			document.getElementById("placarEstrela").innerHTML = document.querySelector(".stars").innerHTML;
-			closePopup();
-		};
-	}
+//SHUFFLE (ANOTADO PÁGINA 50)
+	function shuffle(array) {
+		var currentIndex = array.length, timerraryValue, randomIndex;
+		while (currentIndex !== 0) {
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+			timerraryValue = array[currentIndex];
+			array[currentIndex] = array[randomIndex];
+			array[randomIndex] = timerraryValue;
+		}
 
+	return array;
+}
 
-
-// SHUFFLE (ANOTADO PÁGINA 50)
-	function shuffle(array) 
-	{
-		var currentIndex = array.length, temporaryValue, randomIndex;
-			while (currentIndex !== 0) 
-				{
-					randomIndex = Math.floor(Math.random() * currentIndex); //PARA FAZER O RANDOM 
-					currentIndex -= 1;
-					temporaryValue = array[currentIndex];
-					array[currentIndex] = array[randomIndex];
-					array[randomIndex] = temporaryValue;
-				}
-		return array;
-	}
-
-	function iniciarJogo() 
-	{
+//COMEÇA UM NOVO JOGO
+	function iniciarJogo() {
 		cards = shuffle(cards);
-		for(var i=0; i<cards.length; i++) 
-		{
+		for(var i=0; i<cards.length; i++) {
 			document.querySelector(".deck").innerHTML = "";
-			[].forEach.call(cards, function(item) 
-			{ 
+			[].forEach.call(cards, function(item) {
 				document.querySelector(".deck").appendChild(item);
 			});
 			cards[i].classList.remove("show", "open", "match", "disabled");
 		}
 		counter.restart();
 		estrelas.restart();
-		resetaTimer();
+		resetatimer();
 	}
 
-
+//DEFININDO FUNCIONALIDADE
 	function displayCard() 
 	{
 		this.classList.toggle("open");
@@ -176,28 +128,40 @@
 		this.classList.toggle("disabled");
 	}
 
+	function cardAbrir() 
+	{
+		openedCards.push(this);
+		if(openedCards.length === 2) {
+			counter.add();
+			estrelas.rate();
+			comecatimer();
+			if(openedCards[0].type === openedCards[1].type) {
+				matched();
+			} else {
+				unmatched();
+			}
+		}
+	}
+
 //CARTAS IGUAIS
 	function matched() 
 	{
-		for(var i=0; i<openedCards.length; i++) 
-		{
-			openedCards[i].classList.add("match", "disabled"); 
+		for(var i=0; i<openedCards.length; i++) {
+			openedCards[i].classList.add("match", "disabled");
 			openedCards[i].classList.remove("show", "open", "no-event");
 		}
 		openedCards = [];
 	}
 
 //CARTAS DIFERENTES
-	function unmatched() {
-		for(var i=0; i<openedCards.length; i++) 
-		{
+	function unmatched() 
+	{
+		for(var i=0; i<openedCards.length; i++) {
 			openedCards[i].classList.add("unmatched");
 		}
 		disable();
-		setTimeout(function() 
-		{
-			for(var i=0; i<openedCards.length; i++) 
-			{
+		setTimeout(function() {
+			for(var i=0; i<openedCards.length; i++) {
 				openedCards[i].classList.remove("show", "open", "no-event", "unmatched");
 			}
 			enable();
@@ -205,54 +169,69 @@
 		}, 1100);
 	}
 
-	function cardAberto() 
-	{
-		openedCards.push(this);
-		if(openedCards.length === 2) 
-		{
-			counter.add();
-			estrelas.rate();
-			comecaTimer();
-			if(openedCards[0].type === openedCards[1].type) 
-			{
-				matched(); 
-			} else {
-				unmatched(); 
-			}
-		}
-	}
-
 	function disable() 
 	{
-		for(var i = 0; i < cards.length; i++) 
-		{
+		for(var i = 0; i < cards.length; i++) {
 			cards[i].classList.add("disabled");
 		}
 	}
 
-	function enable() {
-		for(var i = 0; i < cards.length; i++) 
-		{
-			if(!cards[i].classList.contains("match")) 
-			{
+
+	function enable() 
+	{
+		for(var i = 0; i < cards.length; i++) {
+			if(!cards[i].classList.contains("match")) {
 				cards[i].classList.remove("disabled");
 			};
 		}
 	}
 
-//RESETAR O TEMPO
-	function refreshTimer() {
-		timer.innerHTML = minute.value + minute.label + second.value + second.label; 
+//ATURALIZAR E RESETAR O TEMPO
+	function refreshtimer() 
+	{
+		timer.innerHTML = minute.value + minute.label + second.value + second.label;
 	}
 
-//POPUP PARABÉNS FINAL DO JOGO
+	function resetatimer() 
+	{
+		second.value = 0;
+		minute.value = 0;
+		refreshtimer();
+	}
+
+// INICIAR O TEMPO
+	function comecatimer() 
+	{
+		if(movimentos == 1) {
+			interval = setInterval(function() {
+				second.value++;
+				if(second.value == 60) {
+					minute.value++;
+					second.value = 0;
+				}
+				refreshtimer();
+			}, 1000);
+		}
+	}
+
+// PARABENS POPUP - MOSTRANDO O RESULTADO
+	function parabens() 
+	{
+		if(matchedCard.length == 16) {
+			clearInterval(interval);
+			popup.classList.add("show");
+			document.getElementById("total-movi").innerHTML = movimentos;
+			document.getElementById("total-tempo").innerHTML = timer.innerHTML;
+			document.getElementById("placar-estrela").innerHTML = document.querySelector(".stars").innerHTML;
+			closePopup();
+		};
+	}
+
+//BTN INICIAR JOGO
 	function closePopup() 
-	{ //HTML
-		document.getElementById("btn-replay").addEventListener("click", function() 
-		{
-			popup.classList.remove("show"); 
+	{
+		document.getElementById("btn-replay").addEventListener("click", function() {
+			popup.classList.remove("show");
 			iniciarJogo();
 		});
 	}
-
-
